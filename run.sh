@@ -99,7 +99,7 @@ su - postgres -c "psql -tAc \"SELECT 1 from pg_catalog.pg_database where datname
 
 # Install PostGIS (Postgres GIS extension)
 apt-get -y install postgis
-su - postgres -c "psql -d ${database} -tAc \"CREATE EXTENSION postgis;\""
+su - postgres -c "psql -d ${database} -tAc \"CREATE EXTENSION IF NOT EXISTS postgis;\""
 
 # Create site files directory
 mkdir -p /var/www/cyipt/
