@@ -166,7 +166,7 @@ ufw --force enable
 ufw default deny
 ufw allow ssh
 ufw allow http
-ufw allow http
+ufw allow https
 ufw allow smtp
 ufw reload
 ufw status verbose
