@@ -107,7 +107,9 @@ chown -R cyipt.rollout /var/www/cyipt/
 chmod g+ws /var/www/cyipt/
 
 # Add VirtualHost
-cp -pr $ScriptHome/apache.conf /etc/apache2/sites-available/cyipt.conf
+if [ ! -f /etc/apache2/sites-available/cyipt.conf ]; then
+	cp -pr $ScriptHome/apache.conf /etc/apache2/sites-available/cyipt.conf
+fi
 a2ensite cyipt
 service apache2 restart
 
