@@ -72,3 +72,30 @@ sudo find /opt/cyipt-deploy -type d -exec chmod g+s {} \;
 ```
 
 
+## PostgreSQL
+
+### Authentication
+
+The main thing is to change `pg_hba.conf`, which is the authentication permissions file.  
+`sudo pico -w /etc/postgresql/9.5/main/pg_hba.conf`  
+* The order of the file is important. More specific configuration MUST be before the default entries, i.e. at the start.
+* "Typically, earlier records will have tight connection match parameters and weaker authentication methods, while later records will have looser match parameters and stronger authentication methods."
+* See examples at: https://www.postgresql.org/docs/9.5/auth-pg-hba-conf.html#EXAMPLE-PG-HBA.CONF
+* A server may or may not have IPv6 connectivity running. So you may need to have both IPv4 and IPv6 configurations.
+
+Check that you can connect from the command line:  
+`psql -d cyipt -U cyipt`
+
+Start/restart using:  
+`sudo service postgresql start`
+
+Ensure that PostgreSQL is running:  
+`ps aux | grep postgres`
+
+If not, check the PostgreSQL log file:  
+`sudo tail -f /var/log/postgresql/postgresql-9.5-main.log`
+
+### Data transfer to new server
+
+To transfer PostgreSQL data to a new server, see:  
+https://www.postgresql.org/docs/9.5/backup-dump.html
