@@ -75,7 +75,6 @@ apt-get -y install apache2 apache2-utils
 a2enmod rewrite
 a2enmod headers
 a2enmod ssl
-service apache2 restart
 
 # Install PHP (7.2)
 apt-get -y install php php-cli php-mbstring
@@ -109,7 +108,7 @@ if [ ! -f /etc/apache2/sites-available/cyipt.conf ]; then
 	cp -pr $ScriptHome/apache.conf /etc/apache2/sites-available/cyipt.conf
 fi
 a2ensite cyipt
-service apache2 restart
+# Apache is restarted below, once the certificate is present
 
 # Let's Encrypt (free SSL certs), which will create a cron job
 # See: https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-14-04
@@ -125,6 +124,9 @@ if [ ! -f /etc/letsencrypt/live/www.cyipt.bike/fullchain.pem ]; then
 	certbot --agree-tos --no-eff-email certonly --keep-until-expiring --webroot -w /var/www/cyipt/ --email $email -d www.cyipt.bike -d cyipt.bike
 	service apache2 restart
 fi
+
+# Restart Apache
+service apache2 restart
 
 # Clone or update repo
 if [ ! -d /var/www/cyipt/.git/ ]; then
