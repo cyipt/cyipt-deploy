@@ -1,3 +1,5 @@
 # Update site each 5 minutes from Git
 0,5,10,15,20,25,30,35,40,45,50,55 *  * * *  cyipt  cd /var/www/cyipt/ && git pull --quiet
 0,5,10,15,20,25,30,35,40,45,50,55 *  * * *  cyipt  cd /var/www/cyipt/js/lib/Leaflet.LayerViewer/ && git pull --quiet
+0,5,10,15,20,25,30,35,40,45,50,55 *  * * *  cyipt  cd /var/www/popupCycleways/ && git pull --quiet
+
