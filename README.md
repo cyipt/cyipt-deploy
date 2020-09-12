@@ -58,10 +58,6 @@ sudo adduser `whoami` rollout
 # new rollout group; you may want to replace it by doing:
 exec newgrp rollout
 
-# Login
-# user@other-machine:~$
-ssh user@machine
-
 # Set ownership and group
 # user@machine:~$
 sudo chown -R cyipt.rollout /opt/cyipt-deploy
