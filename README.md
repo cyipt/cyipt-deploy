@@ -77,10 +77,10 @@ sudo find /opt/cyipt-deploy -type d -exec chmod g+s {} \;
 ### Authentication
 
 The script will add permissions to `pg_hba.conf`, which is the authentication permissions file.  
-`sudo pico -w /etc/postgresql/9.5/main/pg_hba.conf`  
+`sudo pico -w /etc/postgresql/10/main/pg_hba.conf`  
 * The order of the file is important. More specific configuration MUST be before the default entries, i.e. at the start.
 * "Typically, earlier records will have tight connection match parameters and weaker authentication methods, while later records will have looser match parameters and stronger authentication methods."
-* See examples at: https://www.postgresql.org/docs/9.5/auth-pg-hba-conf.html#EXAMPLE-PG-HBA.CONF
+* See examples at: https://www.postgresql.org/docs/10/auth-pg-hba-conf.html#EXAMPLE-PG-HBA.CONF
 * A server may or may not have IPv6 connectivity running. So you may need to have both IPv4 and IPv6 configurations.
 
 Check that you can connect from the command line:  
@@ -93,7 +93,7 @@ Ensure that PostgreSQL is running:
 `ps aux | grep postgres`
 
 If not, check the PostgreSQL log file:  
-`sudo tail -f /var/log/postgresql/postgresql-9.5-main.log`
+`sudo tail -f /var/log/postgresql/postgresql-10-main.log`
 
 ### Data transfer to new server
 
@@ -104,5 +104,5 @@ Data can be dumped out, compressed, using:
 `sudo -u postgres pg_dump cyipt -Z 9 > cyipt.sql.gz`
 
 Data can be imported, uncompressing on the fly, using:  
-`gunzip < cyipt.sql.gz | psql cyipt`
+`gunzip < cyipt.sql.gz | sudo -u postgres psql cyipt`
 
