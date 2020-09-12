@@ -7,7 +7,7 @@ Uses bash, but ideally would be moved to Ansible/Chef/Docker/Puppet/whatever in 
 
 ## Requirements
 
-Written for Ubuntu Server 16.04 LTS.
+Written for Ubuntu Server 18.04 LTS.
 
 
 ## Timezone
@@ -76,7 +76,7 @@ sudo find /opt/cyipt-deploy -type d -exec chmod g+s {} \;
 
 ### Authentication
 
-The main thing is to change `pg_hba.conf`, which is the authentication permissions file.  
+The script will add permissions to `pg_hba.conf`, which is the authentication permissions file.  
 `sudo pico -w /etc/postgresql/9.5/main/pg_hba.conf`  
 * The order of the file is important. More specific configuration MUST be before the default entries, i.e. at the start.
 * "Typically, earlier records will have tight connection match parameters and weaker authentication methods, while later records will have looser match parameters and stronger authentication methods."
