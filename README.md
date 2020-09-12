@@ -98,4 +98,11 @@ If not, check the PostgreSQL log file:
 ### Data transfer to new server
 
 To transfer PostgreSQL data to a new server, see:  
-https://www.postgresql.org/docs/9.5/backup-dump.html
+https://www.postgresql.org/docs/10/backup-dump.html
+
+Data can be dumped out, compressed, using:  
+`sudo -u postgres pg_dump cyipt -Z 9 > cyipt.sql.gz`
+
+Data can be imported, uncompressing on the fly, using:  
+`gunzip < cyipt.sql.gz | psql cyipt`
+
