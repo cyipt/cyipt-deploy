@@ -110,6 +110,11 @@ mkdir -p /var/www/cyipt/
 chown -R cyipt.rollout /var/www/cyipt/
 chmod g+ws /var/www/cyipt/
 
+# Create site files directory
+mkdir -p /var/www/popupCycleways/
+chown -R cyipt.rollout /var/www/popupCycleways/
+chmod g+ws /var/www/popupCycleways/
+
 # Add VirtualHost
 if [ ! -f /etc/apache2/sites-available/cyipt.conf ]; then
 	cp -pr $ScriptHome/apache.conf /etc/apache2/sites-available/cyipt.conf
@@ -139,9 +144,11 @@ service apache2 restart
 if [ ! -d /var/www/cyipt/.git/ ]; then
 	sudo -u cyipt  git clone https://github.com/cyipt/cyipt-website.git /var/www/cyipt/
 	sudo -u cyipt  git clone https://github.com/cyclestreets/Leaflet.LayerViewer.git /var/www/cyipt/js/lib/Leaflet.LayerViewer/
+	sudo -u cyipt  git clone --branch gh-pages https://github.com/cyipt/popupCycleways.git /var/www/popupCycleways/
 else
 	sudo -u cyipt  git -C /var/www/cyipt/ pull
 	sudo -u cyipt  git -C /var/www/cyipt/js/lib/Leaflet.LayerViewer/ pull
+	sudo -u cyipt  git -C /var/www/popupCycleways/ pull
 fi
 chmod -R g+w /var/www/cyipt/
 
