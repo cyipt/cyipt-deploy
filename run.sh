@@ -99,9 +99,9 @@ apt-get -y install postgis
 su - postgres -c "psql -d ${database} -tAc \"CREATE EXTENSION IF NOT EXISTS postgis;\""
 
 # Enable postgres connectivity, adding to the start of the file, with IPv4 and IPv6 rules
-if ! grep -q cyipt /etc/postgresql/9.5/main/pg_hba.conf; then
-	sed -i '1 i\host  cyipt  cyipt  ::1/128       trust' /etc/postgresql/9.5/main/pg_hba.conf	# IPv6 rule, will end up as second line
-	sed -i '1 i\host  cyipt  cyipt  127.0.0.1/32  trust' /etc/postgresql/9.5/main/pg_hba.conf	# IPv4 rule, will end up as first line
+if ! grep -q cyipt /etc/postgresql/10/main/pg_hba.conf; then
+	sed -i '1 i\host  cyipt  cyipt  ::1/128       trust' /etc/postgresql/10/main/pg_hba.conf	# IPv6 rule, will end up as second line
+	sed -i '1 i\host  cyipt  cyipt  127.0.0.1/32  trust' /etc/postgresql/10/main/pg_hba.conf	# IPv4 rule, will end up as first line
 fi
 sudo service postgresql restart
 
