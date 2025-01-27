@@ -1,6 +1,6 @@
 #!/bin/bash
 # Installs the CyIPT system
-# Written for Ubuntu 18.04 LTS Server
+# Written for Ubuntu 22.04 LTS Server
 
 ### Stage 1 - general setup
 
@@ -79,7 +79,7 @@ a2enmod rewrite
 a2enmod headers
 a2enmod ssl
 
-# Install PHP (7.2)
+# Install PHP (8.1)
 apt-get -y install php php-cli php-mbstring
 apt-get -y install libapache2-mod-php
 
@@ -102,20 +102,20 @@ apt-get -y install postgis
 su - postgres -c "psql -d ${database} -tAc \"CREATE EXTENSION IF NOT EXISTS postgis;\""
 
 # Enable postgres connectivity, adding to the start of the file, with IPv4 and IPv6 rules
-if ! grep -q cyipt /etc/postgresql/10/main/pg_hba.conf; then
-	sed -i '1 i\host  cyipt  cyipt  ::1/128       trust' /etc/postgresql/10/main/pg_hba.conf	# IPv6 rule, will end up as second line
-	sed -i '1 i\host  cyipt  cyipt  127.0.0.1/32  trust' /etc/postgresql/10/main/pg_hba.conf	# IPv4 rule, will end up as first line
+if ! grep -q cyipt /etc/postgresql/14/main/pg_hba.conf; then
+	sed -i '1 i\host  cyipt  cyipt  ::1/128       trust' /etc/postgresql/14/main/pg_hba.conf	# IPv6 rule, will end up as second line
+	sed -i '1 i\host  cyipt  cyipt  127.0.0.1/32  trust' /etc/postgresql/14/main/pg_hba.conf	# IPv4 rule, will end up as first line
 fi
 sudo service postgresql restart
 
 # Create site files directory
 mkdir -p /var/www/cyipt/
-chown -R cyipt.rollout /var/www/cyipt/
+chown -R cyipt:rollout /var/www/cyipt/
 chmod g+ws /var/www/cyipt/
 
 # Create site files directory
 mkdir -p /var/www/popupCycleways/
-chown -R cyipt.rollout /var/www/popupCycleways/
+chown -R cyipt:rollout /var/www/popupCycleways/
 chmod g+ws /var/www/popupCycleways/
 
 # Add VirtualHost
@@ -126,18 +126,16 @@ a2ensite cyipt
 # Apache is restarted below, once the certificate is present
 
 # Let's Encrypt (free SSL certs), which will create a cron job
-# See: https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-14-04
-# See: https://certbot.eff.org/docs/using.html
-add-apt-repository -y ppa:certbot/certbot
-apt-get update
-apt-get -y install python-certbot-apache
+# See: https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu
+# See: https://eff-certbot.readthedocs.io/en/latest/using.html
+apt-get -y install certbot
 
 # Create an HTTPS cert (without auto installation in Apache)
 if [ ! -f /etc/letsencrypt/live/www.cyipt.bike/fullchain.pem ]; then
 	email=info@
 	email+=cyclestreets.net
+	# If this fails, e.g. due to setting up the server before DNS transfer, copy in /etc/letsencrypt/live/www.cyipt.bike/ from the live server and then re-run the script
 	certbot --agree-tos --no-eff-email certonly --keep-until-expiring --webroot -w /var/www/cyipt/ --email $email -d www.cyipt.bike -d cyipt.bike
-	service apache2 restart
 fi
 
 # Restart Apache
@@ -157,7 +155,7 @@ chmod -R g+w /var/www/cyipt/
 
 # Add cronjob to update from Git regularly
 cp $ScriptHome/cyipt.cron /etc/cron.d/cyipt
-chown root.root /etc/cron.d/cyipt
+chown root:root /etc/cron.d/cyipt
 chmod 644 /etc/cron.d/cyipt
 
 # Add mailserver
