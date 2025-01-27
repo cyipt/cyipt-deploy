@@ -64,6 +64,9 @@ apt-get -y upgrade
 apt-get -y dist-upgrade
 apt-get -y autoremove
 
+# Create cyipt user
+id -u cyipt || adduser --disabled-password --gecos "" cyipt
+
 # Install basic utility software
 apt-get -y install wget dnsutils man-db git nano bzip2 screen dos2unix mlocate
 updatedb
