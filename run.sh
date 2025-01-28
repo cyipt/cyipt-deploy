@@ -108,6 +108,15 @@ if ! grep -q cyipt /etc/postgresql/14/main/pg_hba.conf; then
 fi
 sudo service postgresql restart
 
+# NB To import data from a previous installation:
+#  # Dump from existing:
+#  sudo -i -u postgres
+#  pg_dumpall > /tmp/alldbs-oldserver.sql
+#  sudo gzip /tmp/alldbs-oldserver.sql
+#  # On new server, after copying over the file:
+#  sudo -i -u postgres
+#  zcat /tmp/alldbs-oldserver.sql.gz | psql -U postgres	# Takes about 5-10 minutes, and will emit lines such as 'ALTER TABLE', 'COPY n', etc.
+
 # Create site files directory
 mkdir -p /var/www/cyipt/
 chown -R cyipt:rollout /var/www/cyipt/
